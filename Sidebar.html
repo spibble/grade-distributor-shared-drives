@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Sidebar.css') ?>
+  </head>
+  <body>
+    <form id="distribute-form">
+      <table> 
+        <tr><th colspan="3"/>Shared data</th></tr>
+        <tr>
+          <td class="instructions" colspan="3">
+            Select columns to be exported to all spreadsheets.
+          </td>
+        <tr>
+          <td width="40%">Leftmost</td>
+          <td><input class="skinny" type="text" name="leftmost-header" id="lhcol"/></td>
+          <td width="40%"></td>
+        </tr>
+        <tr>
+          <td>Rightmost</td>
+          <td><input type="text" name="header-cols" id="rhcol"></td>
+        </tr>
+        <tr>
+          <td>Last row</td>
+          <td><input type="text" name="last-row" id="lrow"></td>
+        </tr>
+        <tr>
+          <td>Include notes?</td>
+          <td><input type="checkbox" id="public_notes" name="public_notes" value="Notes">
+          </td>
+        </tr>
+        <tr><th colspan="3"/>Student data</th></tr>
+        <tr>
+          <td class="instructions" colspan="3">
+            Each student column is exported to a different child spreadsheet.
+          </td>
+        </tr>
+        <tr>
+          <td>Leftmost</td>
+          <td><input type="text" name="student-col" id="scol"></td>
+        </tr>
+        <tr>
+          <td>Include notes?</td>
+          <td><input type="checkbox" id="student_notes" name="student_notes" value="Notes"></td>
+        </tr>
+        <tr><td colspan="3">
+                    <button 
+              id="submit-button" 
+              name="submit-button" 
+              type="submit">
+              Distribute student grades
+            </button></td></tr>
+      </table>  
+      <div class="row">
+        <div class="flow-text status" id="submit-status" hidden></div>
+      </div>
+    </div>
+    <?!= include('Sidebar.js') ?>  
+  </body>
+</html>
