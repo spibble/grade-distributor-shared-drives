@@ -40,16 +40,8 @@
       .getSelectionCols();
   })
 
-  var status;
-
-  function initializeStatus(element) {
-    console.log('Initializing status to ' + element);
-    status = element;
-  }
-
   function showError(message) {
     var status = $('#submit-status');
-    console.log('status:' + status);
     status.addClass('error');
     status.text(message);
     status.show();
@@ -57,7 +49,6 @@
 
   function showStatus(message) {
     var status = $('#submit-status');
-    console.log('status:' + status);
     status.removeClass('error')
     status.text(message);
     status.show();
@@ -74,7 +65,6 @@
     var lrow = parseInt($('#lrow').val());
 
     if (!passesSanityCheck(lhcol, rhcol, scol, lrow)) {
-      console.log('sanity check failed');
       return;
     }
 
