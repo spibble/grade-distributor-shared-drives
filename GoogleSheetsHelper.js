@@ -67,3 +67,15 @@ function getNumberFormats(range) {
   }
   return formats;
 }
+
+// Copy contents, formatting, and optionally notes.
+// This does not copy the font formats of numeric cells because getRichTextValues() doesn't.
+function copyContents(sourceRange, destRange, copyNotes) {
+  destRange.setNumberFormats(getNumberFormats(sourceRange));
+  destRange.setRichTextValues(sourceRange.getRichTextValues());
+  destRange.setValues(sourceRange.getValues());
+
+  if (copyNotes) {
+    destRange.setNotes(sourceRange.getNotes());
+  }
+}

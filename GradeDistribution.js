@@ -91,18 +91,6 @@ function copyPublicColumns(parentSheet, newSheet, maxRow, firstPublicColNumber, 
   copyContents(publicColsRange, newPublicColsRange, copyPublicNotes);
 }
 
-// Copy contents, formatting, and optionally notes.
-// This does not copy the font formats of numeric cells because getRichTextValues() doesn't.
-function copyContents(sourceRange, destRange, copyNotes) {
-  destRange.setNumberFormats(getNumberFormats(sourceRange));
-  destRange.setRichTextValues(sourceRange.getRichTextValues());
-  destRange.setValues(sourceRange.getValues());
-
-  if (copyNotes) {
-    destRange.setNotes(sourceRange.getNotes());
-  }
-}
-
 // Copy the student column and highlight numeric cells that differ from rightmost public column.
 function createStudentColumn(childSheet, parentStudentColRange, maxRow, numPublicCols, copyStudentNotes) {
   const childStudentColRange = childSheet.getRange(1, numPublicCols + 1, maxRow, 1);
