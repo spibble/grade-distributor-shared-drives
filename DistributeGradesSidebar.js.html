@@ -11,9 +11,7 @@
   $(document).ready(function() {  
     $('#distribute-form').submit(onDistributeFormSubmit);
     var status = $('#submit-status');
-    status.show();
-    status.text('setting text');
-    status.removeClass('error');
+    status.hide();
     
     // Initialize text input values.
     google.script.run
@@ -79,22 +77,20 @@
       console.log('sanity check failed');
       return;
     }
-    return;
 
-    var button = $('#submit-button')
-    var form = $('#distribute-form').get()[0]
-  
-    status.hide()
-
+    showStatus("Starting to run...");
+    var publicNotes = $('#public_notes').is(':checked');
+    var studentNotes = $('#student_notes').is(':checked');
     google.script.run
-      .withSuccessHandler(function() {
-        resetForm('Form submitted OK!')
-      })
-      .withFailureHandler(function(error) {
-        resetForm(error, true)
-      })
-      .onFormSubmit(form);  
-    
+      .withSuccessHandler(
+        function(noErrors) {
+          showStatus(noErrors ? 'Completed without errors.' : 'Completed with errors.');
+        })
+      .withFailureHandler(
+        function(error) {
+          showError('Error! ' + error);
+        })
+      .shareGrades(lhcol, rhcol, lrow, scol, publicNotes, studentNotes);
   }
 
     // This assumes that columns are non-empty. It returns true if col1 < col2.
