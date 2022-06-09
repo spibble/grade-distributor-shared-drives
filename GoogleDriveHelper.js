@@ -92,6 +92,7 @@ function createNewSpreadsheet(spreadsheetName, folderId) {
   return SpreadsheetApp.openById(newSpreadsheetFile.id);
 }
 
+// throws error if folder already exists
 function createFolderIfNotPresent(parentFolder, newFolderName) {
   const oldFoldersIterator = parentFolder.getFoldersByName(newFolderName);
   while (oldFoldersIterator.hasNext()) {

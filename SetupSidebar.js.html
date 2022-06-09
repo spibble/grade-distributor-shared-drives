@@ -56,40 +56,28 @@
           })
       .validateStudentSetupSheet();
   }
-
-  function create() {
-    console.log('create');
-    showStatus('create');
-  }
   
-  function onDistributeFormSubmit(event) {
-    event.preventDefault();
-    showMesssage('onDistributeFormSubmit');
+  function create() {
     this.disabled = true;
     showStatus('Running...');
 
-    var lhcol = $('#lhcol').val();
-    var rhcol = $('#rhcol').val();
-    var scol = $('#scol').val();
-    var lrow = parseInt($('#lrow').val());
-
-    if (!passesSanityCheck(lhcol, rhcol, scol, lrow)) {
-      return;
-    }
+    var topFolderName = $('#fname').val();
+    var prefix = $('#prefix').val();
+    var suffix = $('#suffix').val();
+    var giveEditAccess = $('#edit').is(':checked');
+    var emailStudent = $('#notify').is(':checked');
 
     showStatus("Starting to run...");
-    var publicNotes = $('#public_notes').is(':checked');
-    var studentNotes = $('#student_notes').is(':checked');
     google.script.run
       .withSuccessHandler(
-        function(noErrors) {
-          showStatus(noErrors ? 'Completed without errors.' : 'Completed with errors.');
+        function(numStudents) {
+          showStatus('Created configuration and folders for ' + numStudents + ' student' + (numStudents == 1 ? '.' : 's.') );
         })
       .withFailureHandler(
         function(error) {
           showError('Error! ' + error);
         })
-      .shareGrades(lhcol, rhcol, lrow, scol, publicNotes, studentNotes);
+      .createStudentSheets(topFolderName, prefix, suffix, giveEditAccess, emailStudent);
   }
 
 
