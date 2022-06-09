@@ -1,59 +1,77 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base target="_top">
-    <?!= include('Sidebar.css') ?>
-  </head>
+
+<head>
+  <base target="_top">
+  <?!= include('Sidebar.css') ?>
+</head>
+
 <body>
   <form id="setup-form">
     <table>
       <tr>
-        <td colspan=2 align="center">
-          When setting up a class, you need to blah blah blah.
+        <th colspan=2>Names and emails</th>
+      </tr>
+      <tr>
+        <td colspan=2 class="explanation">
+          Your spreadsheet should have two columns, named "Name" and "Email", and the third column should be empty.
+          Names and email addresses should be unique.
         </td>
       </tr>
-      <tr class="hline">
-        <td colspan="100%" />
+      <tr>
+        <th colspan=2>Folder names</th>
       </tr>
       <tr>
-        <td colspan=2 >Name of folder holding student folders</td>
+        <td colspan=2 class="explanation">Specify the name of the folder that will contain the folders of the
+          individual students.</td>
       </tr>
       <tr>
-        <td colspan=2 ><input type="text" name="folder-name" id="fname" value="Students"/></td>
+        <td colspan=2><input type="text" name="folder-name" id="fname" value="Students" class="wide"/></td>
       </tr>
       <tr>
-        <td colspan=2 >Text to prepend to student names</td>
+        <td colspan=2 class="explanation">Specify any text that should go before student names when creating their
+          folder (such as "CS115-").</td>
       </tr>
       <tr>
-        <td colspan=2 ><input type="text" name="prefix" id="prefix"/></td>
+        <td colspan=2><input type="text" name="prefix" id="prefix" class="wide"/></td>
       </tr>
       <tr>
-        <td colspan=2 >Text to append to student names</td>
+        <td colspan=2 class="explanation">Specify any text that should go after student names when creating their
+          folder (such as "-2022").</td>
       </tr>
       <tr>
-        <td colspan=2 ><input type="text" name="suffix" id="suffix"/></td>
-      </tr>
-      <tr class="hline">
-        <td colspan="100%" />
+        <td colspan=2><input type="text" name="suffix" id="suffix" class="wide"/></td>
       </tr>
       <tr>
-          <td>Notify students?</td>
-          <td><input type="checkbox" id="notify" name="notify_students"></td>
-        </tr>
-      <tr>
-          <td>Give edit access?</td>
-          <td><input type="checkbox" id="edit" name="edit_access"></td>
-        </tr>
-      <tr>
-        <td>Your spreadsheet should have two columns, named "Name" and "Email", and the third column should be empty.</td>
+        <th colspan="2">Folder creation options</th>
       </tr>
-      <tr><td><button id="validate">Validate names/emails</button></td></tr>
-      <tr><td><button id="create">Create folders</button></td></tr>
+      <tr>
+        <td colspan=2>Google can optionally email notifications to students and give them edit access when creating
+          folders.</td>
+      </tr>
+      <tr>
+        <td>Notify students?</td>
+        <td><input type="checkbox" id="notify" name="notify_students"></td>
+      </tr>
+      <tr>
+        <td>Give edit access?</td>
+        <td><input type="checkbox" id="edit" name="edit_access"></td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+      <tr>
+        <td><button id="validate">Validate names/emails</button></td>
+      </tr>
+      <tr>
+        <td><button id="create">Create folders</button></td>
+      </tr>
     </table>
     <div class="row">
       <div class="flow-text status" id="submit-status" hidden></div>
     </div>
   </form>
-    <?!= include('SetupSidebar.js') ?>  
-  </body>
+  <?!= include('SetupSidebar.js') ?>
+</body>
+
 </html>

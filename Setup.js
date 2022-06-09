@@ -68,8 +68,10 @@ function createStudentSheets(topFolderName, prefix, suffix, giveEditAccess, emai
   const urlRange = thisSheet.getRange(1, URL_COLUMN_NUMBER, names.length + 1, 1);
   urlRange.getCell(1, 1).setValue('Folder URL');
   for (var i = 0; i < numStudents; i++) {
-    var name = prefix + names[i].toString().trim() + suffix;
-    var childFolder = studentsFolder.createFolder(name);
+    var name = names[i].toString().trim();
+    toast('Creating folder for ' + name);
+    var childFolderName = prefix + name + suffix;
+    var childFolder = studentsFolder.createFolder(childFolderName);
     addUserPermission(childFolder.getId(), emails[i].toString(), giveEditAccess, emailStudent);
     urlRange.getCell(i + 2, 1).setValue(childFolder.getUrl());
   }
@@ -80,6 +82,7 @@ function createStudentSheets(topFolderName, prefix, suffix, giveEditAccess, emai
 }
 
 function createConfigurationSheet(folder, studentsFolderId, prefix, suffix) {
+  toast('Creating configuration file');
   const spreadsheet = createNewSpreadsheet(CONFIGURATION_FILE_NAME, folder.getId());
   const sheet = spreadsheet.getActiveSheet();
   const vals = [
