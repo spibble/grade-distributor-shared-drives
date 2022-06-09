@@ -32,6 +32,7 @@ function include(filename) {
 
 const CONFIGURATION_FILE_NAME = 'Grade Distributor Configuration';
 
+
 //// Error and alert handling
 
 function error(s) {
@@ -43,7 +44,4 @@ function toast(msg) {
   SpreadsheetApp.getActiveSpreadsheet().toast(msg);
   console.log(msg);
 }
-
-
-
 
