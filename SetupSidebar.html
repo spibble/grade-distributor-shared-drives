@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Sidebar.css') ?>
+  </head>
+<body>
+  <form id="setup-form">
+    <table>
+      <tr>
+        <td colspan=2 align="center">
+          When setting up a class, you need to blah blah blah.
+        </td>
+      </tr>
+      <tr class="hline">
+        <td colspan="100%" />
+      </tr>
+      <tr>
+        <td colspan=2 >Name of folder holding student folders</td>
+      </tr>
+      <tr>
+        <td colspan=2 ><input type="text" name="folder-name" id="fname" value="Students"/></td>
+      </tr>
+      <tr>
+        <td colspan=2 >Text to prepend to student names</td>
+      </tr>
+      <tr>
+        <td colspan=2 ><input type="text" name="prefix" id="prefix"/></td>
+      </tr>
+      <tr>
+        <td colspan=2 >Text to append to student names</td>
+      </tr>
+      <tr>
+        <td colspan=2 ><input type="text" name="suffix" id="suffix"/></td>
+      </tr>
+      <tr class="hline">
+        <td colspan="100%" />
+      </tr>
+      <tr>
+          <td>Notify students?</td>
+          <td><input type="checkbox" id="notify" name="notify_students"></td>
+        </tr>
+      <tr>
+          <td>Give write access?</td>
+          <td><input type="checkbox" id="write" name="write_access"></td>
+        </tr>
+      <tr>
+        <td>Your spreadsheet should have two columns, named "Name" and "Email", and the third column should be empty.</td>
+      </tr>
+      <tr><td><button id="validate">Validate names/emails</button></td></tr>
+      <tr><td><button id="create">Create folders</button></td></tr>
+    </table>
+    <div class="row">
+      <div class="flow-text status" id="submit-status" hidden></div>
+    </div>
+  </form>
+    <?!= include('SetupSidebar.js') ?>  
+  </body>
+</html>

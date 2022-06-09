@@ -23,7 +23,7 @@ function showDistributeGradesSidebar() {
 }
 
 function showSetupClassSidebar() {
-  showSidebar('Set Up Class', 'setup_class');
+  showSidebar('Set Up Class', 'SetupSidebar');
 }
 
 function include(filename) {
