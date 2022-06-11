@@ -54,7 +54,7 @@ function getConfigurationFile(spreadsheet) {
   var configurationFile = null;
   if (parentFolders.hasNext()) {
     var candidate = parentFolders.next();
-    var newConfigFile = getFileByName(candidate, CONFIGURATION_FILE_NAME);
+    var newConfigFile = getFileByName(candidate, CONFIGURATION_FILE_NAME, true);
     if (newConfigFile !== null) {
       if (configurationFile === null) {
         configurationFile = newConfigFile;

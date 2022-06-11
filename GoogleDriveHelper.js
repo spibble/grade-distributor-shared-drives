@@ -14,42 +14,21 @@ function getEnclosingFolder(folder) {
   return enclosingFolder;
 }
 
-// Gets the folder that holds the student folders
-// by searching for a folder with the appropriate name.
-function getStudentsFolder(folder) {
-  for (; ;) {
-    candidates = folder.getFoldersByName(STUDENTS_FOLDER_NAME);
-    if (candidates.hasNext()) {
-      var studentsFolder = candidates.next();
-      if (candidates.hasNext()) {
-        error('Too many folders in ' + folder + ' named ' + STUDENTS_FOLDER_NAME);
+// Search for fileName in folder, and its ancestors if checkParents.
+function getFileByName(folder, fileName, checkParents) {
+  for (;;) {
+    var files = folder.getFilesByName(fileName);
+    if (files.hasNext()) {
+      var file = files.next();
+      if (files.hasNext()) {
+        throw ('There are too many files named "' + fileName + '".');
       }
-      return studentsFolder;
+      return file;
+    }
+    if (!checkParents) {
+      return null;
     }
     folder = getEnclosingFolder(folder);
-  }
-}
-
-function getFileByName(folder, fileName) {
-  const files = folder.getFilesByName(fileName);
-  if (files.hasNext()) {
-    var file = files.next();
-    if (files.hasNext()) {
-      throw ('There are too many files named "' + fileName + '".');
-    }
-    return file;
-  }
-  return null;
-}
-
-function getAffix(fileName, studentFolder) {
-  var files = studentFolder.getFilesByName(fileName);
-  if (files.hasNext()) {
-    var file = files.next();
-    var body = DocumentApp.openById(file.getId()).getBody().getText();
-    return body.trim();
-  } else {
-    return '';
   }
 }
 
