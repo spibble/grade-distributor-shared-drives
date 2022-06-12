@@ -7,70 +7,69 @@
 </head>
 
 <body>
+  <div class="sidebar">
   <form id="setup-form">
     <table>
       <tr>
-        <th colspan=2>Names and emails</th>
+        <th>Names and emails</th>
       </tr>
       <tr>
-        <td colspan=2 class="explanation">
-          Your spreadsheet should have two columns, named "Name" and "Email", and the third column should be empty.
+        <td class="explanation">
+          Your spreadsheet should have two columns, headed with "Name" and "Email", and the third column should be empty.
           Names and email addresses should be unique.
         </td>
       </tr>
-      <tr>
-        <th colspan=2>Folder names</th>
+      <tr class="btn">
+        <td><button class="action" id="validate">Validate names/emails</button></td>
       </tr>
       <tr>
-        <td colspan=2 class="explanation">Specify the name of the folder that will contain the folders of the
-          individual students.</td>
+        <th>Folder names</th>
       </tr>
       <tr>
-        <td colspan=2><input type="text" name="folder-name" id="fname" value="Students" class="wide"/></td>
+        <td class="explanation"><label for="fname">Specify the name of the folder that will contain the folders of the
+          individual students.</label></td>
       </tr>
       <tr>
-        <td colspan=2 class="explanation">Specify any text that should go before student names when creating their
-          folder (such as "CS115-").</td>
+        <td colspan=2><input type="text" name="folder-name" id="fname" value="Students"/></td>
       </tr>
       <tr>
-        <td colspan=2><input type="text" name="prefix" id="prefix" class="wide"/></td>
+        <td class="explanation"><label for="prefix">Specify any text that should go before student names when creating their
+          folder (such as "CS115-").</label></td>
       </tr>
       <tr>
-        <td colspan=2 class="explanation">Specify any text that should go after student names when creating their
-          folder (such as "-2022").</td>
+        <td colspan=2><input type="text" name="prefix" id="prefix"/></td>
       </tr>
       <tr>
-        <td colspan=2><input type="text" name="suffix" id="suffix" class="wide"/></td>
+        <td class="explanation"><label for="suffix">Specify any text that should go after student names when creating their
+          folder (such as "-2022").</label></td>
       </tr>
       <tr>
-        <th colspan="2">Folder creation options</th>
+        <td><input type="text" name="suffix" id="suffix"/></td>
+      </tr>
+      <tr>
+        <th>Folder creation options</th>
       </tr>
       <tr>
         <td colspan=2>Google can optionally email notifications to students and give them edit access when creating
           folders.</td>
       </tr>
       <tr>
-        <td>Notify students?</td>
+        <td><label for="notify">Notify students?</label></td>
         <td><input type="checkbox" id="notify" name="notify_students"></td>
       </tr>
       <tr>
-        <td>Give edit access?</td>
-        <td><input type="checkbox" id="edit" name="edit_access"></td>
+        <td width="50%"><label for="edit">Give edit access?</label></td>
+        <td width="50%"><input type="checkbox" id="edit" name="edit_access"></td>
       </tr>
-      <tr>
-        <td></td>
-      </tr>
-      <tr>
-        <td><button id="validate">Validate names/emails</button></td>
-      </tr>
-      <tr>
-        <td><button id="create">Create folders</button></td>
+      <tr class="btn">
+        <td><button class="actip" id="create">Create folders</button></td>
       </tr>
     </table>
     <div class="row">
       <div class="flow-text status" id="submit-status" hidden></div>
     </div>
   </form>
+  </div>
   <?!= include('SetupSidebar.js') ?>
 </body>
 
