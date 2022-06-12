@@ -9,27 +9,23 @@
     padding-left: 10px;
   }
 
-  // Start Ellen
-  /*
-  form {
-    font-family: "PT Sans", Arial, sans-serif;
-  }
-  */
-
   table {
     border-collapse: collapse;
     table-layout: fixed;
     border: none;
   }
 
-  th {
+  div.header {
     text-align: left;
-    padding-top: 0.5em;
     text-transform: uppercase;
     font-weight: bold;
     border-bottom: none;
-    padding: 6px 0 0 0;
-    colspan: 2;
+    padding-bottom: 4px;
+    padding-top: 4px;
+  }
+
+  div.header.first {
+    padding-top: 0px;
   }
 
   td {
@@ -37,19 +33,19 @@
     border-bottom: none;
   }
 
-  td.explanation {
+  div.explanation {
     font-size: 0.8rem;
-    colspan: 100%;
     line-height: 1.2;
+    padding-bottom: 6px;
   }
 
-  tr.btn td {
-    colspan: 100%;
+  div.btn {
     text-align: center;
     padding-bottom: 1em;
   }
 
   input[type="text"] {
-    margin-bottom: 4px;
+    margin-top: .2em;
+    margin-bottom: .8em;
   }
 </style>

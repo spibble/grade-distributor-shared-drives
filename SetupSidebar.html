@@ -7,68 +7,47 @@
 </head>
 
 <body>
-  <div class="sidebar">
-  <form id="setup-form">
-    <table>
-      <tr>
-        <th>Names and emails</th>
-      </tr>
-      <tr>
-        <td class="explanation">
-          Your spreadsheet should have two columns, headed with "Name" and "Email", and the third column should be empty.
-          Names and email addresses should be unique.
-        </td>
-      </tr>
-      <tr class="btn">
-        <td><button class="action" id="validate">Validate names/emails</button></td>
-      </tr>
-      <tr>
-        <th>Folder names</th>
-      </tr>
-      <tr>
-        <td class="explanation"><label for="fname">Specify the name of the folder that will contain the folders of the
-          individual students.</label></td>
-      </tr>
-      <tr>
-        <td colspan=2><input type="text" name="folder-name" id="fname" value="Students"/></td>
-      </tr>
-      <tr>
-        <td class="explanation"><label for="prefix">Specify any text that should go before student names when creating their
-          folder (such as "CS115-").</label></td>
-      </tr>
-      <tr>
-        <td colspan=2><input type="text" name="prefix" id="prefix"/></td>
-      </tr>
-      <tr>
-        <td class="explanation"><label for="suffix">Specify any text that should go after student names when creating their
-          folder (such as "-2022").</label></td>
-      </tr>
-      <tr>
-        <td><input type="text" name="suffix" id="suffix"/></td>
-      </tr>
-      <tr>
-        <th>Folder creation options</th>
-      </tr>
-      <tr>
-        <td colspan=2>Google can optionally email notifications to students and give them edit access when creating
-          folders.</td>
-      </tr>
-      <tr>
-        <td><label for="notify">Notify students?</label></td>
-        <td><input type="checkbox" id="notify" name="notify_students"></td>
-      </tr>
-      <tr>
-        <td width="50%"><label for="edit">Give edit access?</label></td>
-        <td width="50%"><input type="checkbox" id="edit" name="edit_access"></td>
-      </tr>
-      <tr class="btn">
+  <div class="sidebar block">
+    <form id="setup-form">
+      <div class="header first">Names and emails</div>
+      <div class="explanation">
+        Your spreadsheet should have two columns, headed with "Name" and "Email", and the third column should be empty.
+        Names and email addresses should be unique.
+      </div>
+      <div class="btn">
+        <button class="action" id="validate">Validate names/emails</button>
+      </div>
+      <div class="header">Folder names</div>
+      <div class="explanation"><label for="fname">Specify the name of the folder that will contain the folders of the
+          individual students.</label></div>
+      <div>
+        <input type="text" name="folder-name" id="fname" value="Students"/>
+      </div>
+      <div class="explanation"><label for="prefix">Specify any text that should go before student names when creating their
+          folder (such as "CS115-").</label></div>
+      <div><input type="text" name="prefix" id="prefix"/></div>
+      <div class="explanation"><label for="suffix">Specify any text that should go after student names when creating their
+          folder (such as "-2022").</label></div>
+      <div><input type="text" name="suffix" id="suffix"/></div>
+      <div class="header">Folder creation options</div>
+      <div class="explanation">Google can optionally email notifications to students and give them edit access when
+        creating
+        folders.</div>
+      <div>
+        <input type="checkbox" id="notify" name="notify_students"/>
+        <label for="notify">Notify students</label></td>
+      </div>
+      <div>
+        <input type="checkbox" id="edit" name="edit_access">
+        <label for="edit">Give edit access</label>
+      </div>
+      <div class="btn">
         <td><button class="actip" id="create">Create folders</button></td>
-      </tr>
-    </table>
-    <div class="row">
-      <div class="flow-text status" id="submit-status" hidden></div>
-    </div>
-  </form>
+      </div>
+      <div class="row">
+        <div class="flow-text status" id="submit-status" hidden></div>
+      </div>
+    </form>
   </div>
   <?!= include('SetupSidebar.js') ?>
 </body>
