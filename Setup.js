@@ -9,10 +9,14 @@ const EMAIL_ERROR_MESSAGE = 'The top cell in the second column must be "Email".'
 const URL_COLUMN_NUMBER = 3;
 const URL_ERROR_MESSAGE = 'The third column should be empty.';
 const CONFIGURATION_HEADER_TEXT = 'This file contains information needed by the Grade Distributor add-on. Do not edit it.';
+const IS_VALIDATED_KEY = 'validated';
 
 // returns [names, emails] if good; otherwise throws exception
 function validateStudentSetupSheet() {
+  setIsValidated(false);
+  deleteTriggers();
   const thisSheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+
   checkColumnHeader(thisSheet, NAME_COLUMN_NUMBER, NAME_COLUMN_NAME, NAME_ERROR_MESSAGE);
   checkColumnHeader(thisSheet, EMAIL_COLUMN_NUMBER, EMAIL_COLUMN_NAME, EMAIL_ERROR_MESSAGE);
 
@@ -34,7 +38,38 @@ function validateStudentSetupSheet() {
     throw (URL_ERROR_MESSAGE);
   }
 
+  setIsValidated(true);
+  addTrigger();
   return [names, emails];
+}
+
+function getIsValidated() {
+  return PropertiesService.getScriptProperties().getProperty(IS_VALIDATED_KEY) === 'true';
+}
+
+function setIsValidated(value) {
+  PropertiesService.getScriptProperties().setProperty(IS_VALIDATED_KEY, value);
+}
+
+function deleteTriggers() {
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    ScriptApp.deleteTrigger(triggers[i]);
+  }
+}
+
+function addTrigger() {
+  deleteTriggers();
+  if (ScriptApp.getProjectTriggers().length == 0) {
+    ScriptApp.newTrigger("respondToEdit")
+      .forSpreadsheet(SpreadsheetApp.getActive())
+      .onEdit()
+      .create()
+  }
+}
+
+function respondToEdit(e) {
+  setIsValidated(false);
 }
 
 function getNames(sheet, maxRow) {
