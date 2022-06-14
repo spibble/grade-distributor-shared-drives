@@ -1,0 +1,139 @@
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+<!-- This contains code used by both SetupSidebar and AddStudentsSidebar. -->
+
+<script>
+
+  // Disable/enable buttons
+
+  function setDisabled(selector, value) {
+    $(selector).prop('disabled', value);
+  }
+
+  function enableCreateButton() {
+    setDisabled('#create', false);
+  }
+
+  function disableCreateButton() {
+    setDisabled('#create', true);
+  }
+
+  function enableValidateButton() {
+    setDisabled('#validate', false);
+  }
+
+  function disableValidateButton() {
+    setDisabled('#validate', true);
+  }
+
+
+  // Validation
+
+  function showValidationError(message) {
+    var status = $('#validation-status');
+    enableValidateButton();
+    disableCreateButton();
+    status.addClass('error');
+    status.text(message);
+    status.show();
+  }
+
+  function hideValidationError() {
+    var status = $('#validation-status');
+    status.removeClass('error');
+    status.hide();
+  }
+
+  const CHECK_VALIDATION_MS = 500;
+  var setIntervalId = false;
+
+  function showValidationSuccess() {
+    var button = $('#validate');
+    disableValidateButton();
+    enableCreateButton();
+    var status = $('#validation-status');
+    status.text('Names and emails validated');
+    status.show();
+    setIntervalId = setInterval(checkValidation, CHECK_VALIDATION_MS);
+  }
+
+  // If the spreadsheet is edited after successful validation,
+  // it should no longer be considered validated.
+  function requireValidation() {
+    $('#validate').prop('disabled', false);
+    disableCreateButton();
+    var status = $('#validation-status');
+    if (!status.hasClass('error')) {
+        status.text('');
+        status.hide();
+    }
+  }
+
+  function showError(message) {
+    var status = $('#submit-status');
+    status.addClass('error');
+    status.text(message);
+    status.show();
+  }
+
+  function showStatus(message) {
+    var status = $('#submit-status');
+    status.removeClass('error')
+    status.text(message);
+    status.show();
+  }
+
+  function validate() {
+    disableValidateButton();
+    hideValidationError();
+    google.script.run
+      .withSuccessHandler(
+        function(noErrors) {
+          showValidationSuccess();
+        })
+      .withFailureHandler(
+          function(error) {
+            showValidationError(error);
+          })
+      .validateStudentSetupSheet();
+  }
+  
+  function checkValidation() {
+    google.script.run
+      .withSuccessHandler(
+        function(isValidated) {
+          if (!isValidated) {
+            clearInterval(setIntervalId);
+            requireValidation();
+          }
+        }
+      )
+      .getIsValidated();
+  }
+
+  function create() {
+    disableCreateButton();
+    showStatus('Running...');
+
+    var topFolderName = $('#fname').val();
+    var prefix = $('#prefix').val();
+    var suffix = $('#suffix').val();
+    var giveEditAccess = $('#edit').is(':checked');
+    var emailStudent = $('#notify').is(':checked');
+
+    showStatus("Starting to run...");
+    google.script.run
+      .withSuccessHandler(
+        function(numStudents) {
+          showStatus('Created configuration and folders for ' + numStudents + ' student' + (numStudents == 1 ? '.' : 's.') );
+        })
+      .withFailureHandler(
+        function(error) {
+          showError('Error! ' + error);
+        })
+      .createStudentSheets(topFolderName, prefix, suffix, giveEditAccess, emailStudent);
+  }
+
+
+</script>
