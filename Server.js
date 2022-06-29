@@ -4,6 +4,7 @@ function onOpen(e) {
   SpreadsheetApp.getUi().createAddonMenu()
     .addItem('Distribute grades', 'showDistributeGradesSidebar')
     .addItem('Set up class', 'showSetupClassSidebar')
+    .addItem('Add students to class', 'showAddStudentsSidebar')
     .addToUi();
 }
 
@@ -26,11 +27,13 @@ function showSetupClassSidebar() {
   showSidebar('Set Up Class', 'SetupSidebar');
 }
 
+function showAddStudentsSidebar() {
+  showSidebar('Add Students', 'AddStudentsSidebar');
+}
+
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent()
 }
-
-const CONFIGURATION_FILE_NAME = 'Grade Distributor Configuration';
 
 
 //// Error and alert handling

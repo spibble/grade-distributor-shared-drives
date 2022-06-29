@@ -9,14 +9,14 @@ function getEnclosingFolder(folder) {
       error('Folder has more than one enclosing folder: ' + folder);
     }
   } else {
-    error('Folder has no enclosing folder: ' + folder);
+    return null; // error('Folder has no enclosing folder: ' + folder);
   }
   return enclosingFolder;
 }
 
 // Search for fileName in folder, and its ancestors if checkParents.
 function getFileByName(folder, fileName, checkParents) {
-  for (;;) {
+  while (folder != null) {
     var files = folder.getFilesByName(fileName);
     if (files.hasNext()) {
       var file = files.next();
@@ -30,6 +30,7 @@ function getFileByName(folder, fileName, checkParents) {
     }
     folder = getEnclosingFolder(folder);
   }
+  return null;
 }
 
 function getStudentFolder(studentsFolder, name) {

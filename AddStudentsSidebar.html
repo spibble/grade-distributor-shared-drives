@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <?!= include('Sidebar.css') ?>
+</head>
+
+<body>
+  <div class="sidebar block">
+    <form id="setup-form">
+      <div class="header first">Names and emails</div>
+      <div class="explanation">
+        Your spreadsheet should have two columns, headed with "Name" and "Email". Folders will be created for the provided names if they don't already exist and the third column is empty.
+      </div>
+      <div class="btn">
+        <button class="action" id="validate">Validate names/emails</button>
+      </div>
+      <div class="status" id="validation-status" hidden></div>
+      <div class="header">Folder creation options</div>
+      <div class="explanation">Google can optionally email notifications to students and give them edit access when
+        creating
+        folders.</div>
+      <div>
+        <input type="checkbox" id="notify" name="notify_students"/>
+        <label for="notify">Notify students</label>
+      </div>
+      <div class="last">
+        <input type="checkbox" id="edit" name="edit_access">
+        <label for="edit">Give edit access</label>
+      </div>
+      <div class="btn">
+        <button class="action" id="create" disabled>Create folders</button>
+      </div>
+      <div class="flow-text status" id="submit-status" hidden></div>
+    </form>
+  </div>
+  <?!= include('CommonClientCode.js') ?>
+  <?!= include('AddStudentsSidebar.js') ?>
+</body>
+
+</html>

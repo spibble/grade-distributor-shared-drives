@@ -84,7 +84,8 @@
     status.show();
   }
 
-  function validate() {
+  // flag initial is true when creating the class, false when adding folders
+  function validate(initial) {
     disableValidateButton();
     hideValidationError();
     google.script.run
@@ -96,7 +97,7 @@
           function(error) {
             showValidationError(error);
           })
-      .validateStudentSetupSheet();
+      .validateStudentSetupSheet(initial);
   }
   
   function checkValidation() {
@@ -112,28 +113,7 @@
       .getIsValidated();
   }
 
-  function create() {
-    disableCreateButton();
-    showStatus('Running...');
 
-    var topFolderName = $('#fname').val();
-    var prefix = $('#prefix').val();
-    var suffix = $('#suffix').val();
-    var giveEditAccess = $('#edit').is(':checked');
-    var emailStudent = $('#notify').is(':checked');
-
-    showStatus("Starting to run...");
-    google.script.run
-      .withSuccessHandler(
-        function(numStudents) {
-          showStatus('Created configuration and folders for ' + numStudents + ' student' + (numStudents == 1 ? '.' : 's.') );
-        })
-      .withFailureHandler(
-        function(error) {
-          showError('Error! ' + error);
-        })
-      .createStudentSheets(topFolderName, prefix, suffix, giveEditAccess, emailStudent);
-  }
 
 
 </script>

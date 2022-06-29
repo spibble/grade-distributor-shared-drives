@@ -5,24 +5,21 @@
     // https://stackoverflow.com/a/3321693/631051
     $('#validate').click(function(e) {
       e.preventDefault();
-      validate(true);
+      validate(false);
       return true;
     });
 
     $('#create').click(function(e) {
       e.preventDefault();
-      create();
+      addStudents(false);
       return true;
     });
   })
-
-  function create() {
+  
+  function addStudents() {
     disableCreateButton();
     showStatus('Running...');
 
-    var topFolderName = $('#fname').val();
-    var prefix = $('#prefix').val();
-    var suffix = $('#suffix').val();
     var giveEditAccess = $('#edit').is(':checked');
     var emailStudent = $('#notify').is(':checked');
 
@@ -37,6 +34,6 @@
           showError('Error! ' + error);
           enableValidateButton();
         })
-      .createClass(topFolderName, prefix, suffix, giveEditAccess, emailStudent);
+      .addStudentSheets(giveEditAccess, emailStudent);
   }
 </script>

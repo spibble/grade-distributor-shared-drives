@@ -34,41 +34,6 @@ function shareGrades(firstPublicColumnLetter, lastPublicColumnLetter, maxRow,
   return numFailures == 0;
 }
 
-function getConfiguration(spreadsheet) {
-  const configurationFile = getConfigurationFile(spreadsheet);
-  const configSpreadsheet = SpreadsheetApp.openById(configurationFile.getId());
-  const sheet = configSpreadsheet.getActiveSheet();
-  // Skip top row to get column with folder id, prefix, and suffix
-  const values = sheet.getRange(2, 1, 4, 1).getValues();
-  const studentsFolderId = values[0][0].toString().trim();
-  const prefix = values[1][0].toString().trim();
-  const suffix = values[2][0].toString().trim();
-  if (studentsFolderId === '') {
-    throw ('File named "' + '" is corrupted. Grade distribution cannot proceed.');
-  }
-  return [studentsFolderId, prefix, suffix];
-}
-
-function getConfigurationFile(spreadsheet) {
-  const parentFolders = DriveApp.getFileById(spreadsheet.getId()).getParents();
-  var configurationFile = null;
-  if (parentFolders.hasNext()) {
-    var candidate = parentFolders.next();
-    var newConfigFile = getFileByName(candidate, CONFIGURATION_FILE_NAME, true);
-    if (newConfigFile !== null) {
-      if (configurationFile === null) {
-        configurationFile = newConfigFile;
-      } else {
-        throw ('This spreadsheet is in two different folders that contain files named "' + CONFIGURATION_FILE_NAME + '". Grade distribution cannot proceed.');
-      }
-    }
-  }
-  if (configurationFile === null) {
-    throw ('Unable to find file in this folder named "' + CONFIGURATION_FILE_NAME + '". Grade distribution cannot proceed.');
-  }
-  return configurationFile;
-}
-
 function makeNewSheet(name, parentSheet, studentColNumber, maxRow, studentsFolder, prefix, suffix, firstPublicColNumber, lastPublicColNumber, copyPublicNotes, copyStudentNotes) {
   const numPublicCols = lastPublicColNumber - firstPublicColNumber + 1;
   const parentStudentColRange = parentSheet.getRange(1, studentColNumber, maxRow, 1);
