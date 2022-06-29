@@ -27,7 +27,7 @@
     google.script.run
       .withSuccessHandler(
         function(numStudents) {
-          showStatus('Created configuration and folders for ' + numStudents + ' student' + (numStudents == 1 ? '.' : 's.') );
+          showStatus('Added folders for ' + numStudents + ' student' + (numStudents == 1 ? '.' : 's.') );
         })
       .withFailureHandler(
         function(error) {

@@ -83,17 +83,29 @@ function createFolderIfNotPresent(parentFolder, newFolderName) {
   return parentFolder.createFolder(newFolderName);
 }
 
-// https://stackoverflow.com/a/29647047/631051
-// https://developers.google.com/drive/api/v2/reference/permissions?hl=en
+// Exception that can be thrown, necessitating retry. See https://stackoverflow.com/q/72793546/631051
+const PERMISSION_ERROR_SUBSTRING = 'Since there is no Google account associated with this email address, you must check the "Notify people" box to invite this recipient.'
+
 function addUserPermission(fileId, email, writePermission, notify) {
-  var request = Drive.Permissions.insert({
-    'value': email,
-    'type': 'user',
-    'role': (writePermission ? 'writer' : 'reader'),
-    'withLink': false
-  },
-    fileId,
-    {
-      'sendNotificationEmails': notify
-    });
+  // https://stackoverflow.com/a/29647047/631051
+  // https://developers.google.com/drive/api/v2/reference/permissions?hl=en
+  try {
+    Drive.Permissions.insert({
+      'value': email,
+      'type': 'user',
+      'role': (writePermission ? 'writer' : 'reader'),
+      'withLink': false
+    },
+      fileId,
+      {
+        'sendNotificationEmails': notify
+      });
+  } catch (e) {
+    // The above call might fail if writePermission is false and the email address
+    // does not correspond to a Google account, in which case this will reattempt
+    // with writePermission enabled. See https://stackoverflow.com/q/72793546/631051
+    if (!notify && e.toString().includes(PERMISSION_ERROR_SUBSTRING)) {
+      addUserPermission(fileId, email, writePermission, true);
+    }
+  }
 }

@@ -120,7 +120,7 @@ function addStudentSheets(giveEditAccess, emailStudent) {
   // Before creating student folders, find and extract information from configuration file.
   const configurationFile = getConfigurationFile(thisSpreadsheet);
   if (configurationFile === null) {
-    throw('Unable to find file named "' + CONFIGURATION_FILE_NAME + '", which should have been created when the class was set up.');
+    throw ('Unable to find file named "' + CONFIGURATION_FILE_NAME + '", which should have been created when the class was set up.');
   }
   const configuration = getConfigurationFromFile(configurationFile);
   const studentsFolderId = configuration[0];
@@ -145,12 +145,18 @@ function createStudentFoldersAndUpdateSheet(thisSheet, studentsFolder, prefix, s
     const name = names[i].toString().trim();
     console.log('/' + name + '/');
     if (name.length > 0) {
-      toast('Creating folder for ' + name);
-      var childFolderName = prefix + name + suffix;
-      var childFolder = studentsFolder.createFolder(childFolderName);
-      addUserPermission(childFolder.getId(), emails[i].toString(), giveEditAccess, emailStudent);
-      urlRange.getCell(i + 2, 1).setValue(childFolder.getUrl());
-      numStudents++;
+      const childFolderName = prefix + name + suffix;
+      const childFolder = studentsFolder.createFolder(childFolderName);
+      const email = emails[i].toString().trim();
+      try {
+        addUserPermission(childFolder.getId(), email, giveEditAccess, emailStudent);
+        urlRange.getCell(i + 2, 1).setValue(childFolder.getUrl());
+        toast('Created folder for ' + name);
+        numStudents++;
+      } catch (e) {
+        childFolder.setTrashed(true);
+        urlRange.getCell(i + 2, 1).setValue(e.toString());
+      }
     }
   }
   return numStudents
