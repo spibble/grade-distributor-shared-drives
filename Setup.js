@@ -38,33 +38,30 @@ function validateStudentSetupSheet(initial) {
   const namesAndEmails = getNamesAndEmails(thisSheet, maxNameRow);
   const names = namesAndEmails[0];
   const emails = namesAndEmails[1];
+  const flags = namesAndEmails[2];
   ensureNonEmptyValuesUnique(names);
   ensureNonEmptyValuesUnique(emails);
 
   setIsValidated(true);
   addTrigger();
-  return [names, emails];
+  return [names, emails, flags];
 }
 
-// Gets names and email addresses from the respective columns when the URL column is empty.
+// Gets names and email addresses from the respective columns. This also returns an array of booleans
+// indicating whether a new folder should be created, based on the value of the URL column.
 // This assumes that NAME_COLUMN_NUMBER, EMAIL_COLUMN_NUMBER, and URL_COLUMN_NUMBER are adjacent (e.g., 1, 2, 3).
 function getNamesAndEmails(sheet, maxRow) {
   const values = sheet.getRange(2, NAME_COLUMN_NUMBER, maxRow - 1, 3).getValues();
   const names = new Array(maxRow - 1);
   const emails = new Array(maxRow - 1);
+  const flags = new Array(maxRow - 1);
   for (var i = 0; i < values.length; i++) {
-    const value = values[i][URL_COLUMN_NUMBER - NAME_COLUMN_NUMBER].toString().trim();
-    // Blank out entries with non-empty URL column values.
-    if (value.length === 0) {
-      names[i] = values[i][0];
-      emails[i] = values[i][1];
-    } else {
-      names[i] = '';
-      emails[i] = '';
-    }
+    names[i] = values[i][0];
+    emails[i] = values[i][1];
+    flags[i] = values[i][URL_COLUMN_NUMBER - NAME_COLUMN_NUMBER].toString().trim().length == 0;
   }
 
-  return [names, emails];
+  return [names, emails, flags];
 }
 
 function getIsValidated() {
@@ -101,6 +98,7 @@ function createClass(topFolderName, prefix, suffix, giveEditAccess, emailStudent
   const arr = validateStudentSetupSheet();
   const names = arr[0];
   const emails = arr[1];
+  const flags = arr[2];
 
   // Create configuration file, or throw error if it already exists.
   const thisSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -110,7 +108,7 @@ function createClass(topFolderName, prefix, suffix, giveEditAccess, emailStudent
 
   // Create student folders, adding the URLs to the spreadsheet.
   const thisSheet = thisSpreadsheet.getActiveSheet();
-  return numStudents = createStudentFoldersAndUpdateSheet(thisSheet, studentsFolder, prefix, suffix, giveEditAccess, emailStudent, names, emails);
+  return numStudents = createStudentFoldersAndUpdateSheet(thisSheet, studentsFolder, prefix, suffix, giveEditAccess, emailStudent, names, emails, flags);
 }
 
 function addStudentSheets(giveEditAccess, emailStudent) {
@@ -132,19 +130,19 @@ function addStudentSheets(giveEditAccess, emailStudent) {
   const arr = validateStudentSetupSheet();
   const names = arr[0];
   const emails = arr[1];
+  const flags = arr[2];
 
   // Create student folders and return count.
-  return createStudentFoldersAndUpdateSheet(thisSheet, studentsFolder, prefix, suffix, giveEditAccess, emailStudent, names, emails);
+  return createStudentFoldersAndUpdateSheet(thisSheet, studentsFolder, prefix, suffix, giveEditAccess, emailStudent, names, emails, flags);
 }
 
-function createStudentFoldersAndUpdateSheet(thisSheet, studentsFolder, prefix, suffix, giveEditAccess, emailStudent, names, emails) {
+function createStudentFoldersAndUpdateSheet(thisSheet, studentsFolder, prefix, suffix, giveEditAccess, emailStudent, names, emails, flags) {
   var numStudents = 0;
   const urlRange = thisSheet.getRange(1, URL_COLUMN_NUMBER, names.length + 1, 1);
   urlRange.getCell(1, 1).setValue('Folder URL');
   for (var i = 0; i < names.length; i++) {
     const name = names[i].toString().trim();
-    console.log('/' + name + '/');
-    if (name.length > 0) {
+    if (flags[i]) {
       const childFolderName = prefix + name + suffix;
       const childFolder = studentsFolder.createFolder(childFolderName);
       const email = emails[i].toString().trim();
