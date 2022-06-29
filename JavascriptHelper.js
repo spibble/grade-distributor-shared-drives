@@ -17,3 +17,10 @@ function ensureNonEmptyValuesUnique(values) {
     }
   }
 }
+
+// https://stackoverflow.com/a/9204568/631051
+const EMAIL_REGEX = /\S+@\S+\.\S+/
+
+function isValidEmail(email) {
+  return EMAIL_REGEX.test(email);
+}

@@ -41,10 +41,19 @@ function validateStudentSetupSheet(initial) {
   const flags = namesAndEmails[2];
   ensureNonEmptyValuesUnique(names);
   ensureNonEmptyValuesUnique(emails);
+  ensureEmailsValid(emails);
 
   setIsValidated(true);
   addTrigger();
   return [names, emails, flags];
+}
+
+function ensureEmailsValid(emails) {
+  for (var i = 0; i < emails.length; i++) {
+    if (!isValidEmail(emails[i])) {
+      throw ('Invalid email address: ' + emails[i]);
+    }
+  }
 }
 
 // Gets names and email addresses from the respective columns. This also returns an array of booleans
@@ -56,8 +65,8 @@ function getNamesAndEmails(sheet, maxRow) {
   const emails = new Array(maxRow - 1);
   const flags = new Array(maxRow - 1);
   for (var i = 0; i < values.length; i++) {
-    names[i] = values[i][0];
-    emails[i] = values[i][1];
+    names[i] = values[i][0].toString().trim();
+    emails[i] = values[i][1].toString().trim();
     flags[i] = values[i][URL_COLUMN_NUMBER - NAME_COLUMN_NUMBER].toString().trim().length == 0;
   }
 
@@ -141,11 +150,11 @@ function createStudentFoldersAndUpdateSheet(thisSheet, studentsFolder, prefix, s
   const urlRange = thisSheet.getRange(1, URL_COLUMN_NUMBER, names.length + 1, 1);
   urlRange.getCell(1, 1).setValue('Folder URL');
   for (var i = 0; i < names.length; i++) {
-    const name = names[i].toString().trim();
+    const name = names[i];
     if (flags[i]) {
       const childFolderName = prefix + name + suffix;
       const childFolder = studentsFolder.createFolder(childFolderName);
-      const email = emails[i].toString().trim();
+      const email = emails[i];
       try {
         addUserPermission(childFolder.getId(), email, giveEditAccess, emailStudent);
         urlRange.getCell(i + 2, 1).setValue(childFolder.getUrl());
