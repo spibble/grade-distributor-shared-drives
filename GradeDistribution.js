@@ -6,7 +6,7 @@ function shareGrades(firstPublicColumnLetter, lastPublicColumnLetter, maxRow,
   const thisSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const thisSheet = thisSpreadsheet.getActiveSheet();
   const name = thisSpreadsheet.getName();
-  const configuration = getConfiguration(thisSpreadsheet);
+  const configuration = getConfiguration(thisSpreadsheet, true);
   const studentsFolder = DriveApp.getFolderById(configuration[0]);
   const prefix = configuration[1];
   const suffix = configuration[2];

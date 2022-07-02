@@ -4,9 +4,9 @@ const CONFIGURATION_FILE_NAME = 'Grade Distributor Configuration';
 const CONFIGURATION_HEADER_TEXT = 'This file contains information needed by the Grade Distributor add-on. Do not edit it.';
 
 function createConfigurationSheet(thisSpreadsheet, studentsFolderId, prefix, suffix) {
-  const earlierConfigurationFile = getConfigurationFile(thisSpreadsheet)
+  const earlierConfigurationFile = getConfigurationFile(thisSpreadsheet, false)
   if (earlierConfigurationFile != null) {
-    throw ('There is already a file named "' + CONFIGURATION_FILE_NAME + '" , which means Grade Distributor has already done the setup process in this or a parent directory. If the setup was unsuccessful, delete that file and try again.');
+    throw ('There is already a file named "' + CONFIGURATION_FILE_NAME + '" , which means a class has already been created in this directory. If the setup was unsuccessful, delete that file and try again.');
   }
   const folder = DriveApp.getFileById(thisSpreadsheet.getId()).getParents().next();
 
@@ -25,8 +25,8 @@ function createConfigurationSheet(thisSpreadsheet, studentsFolderId, prefix, suf
   range.setNumberFormats(textFormats);
 }
 
-function getConfiguration(spreadsheet) {
-  const configurationFile = getConfigurationFile(spreadsheet);
+function getConfiguration(spreadsheet, checkParents) {
+  const configurationFile = getConfigurationFile(spreadsheet, checkParents);
   if (configurationFile === null) {
     throw ('Unable to find file named "' + CONFIGURATION_FILE_NAME + '". Grade distribution cannot proceed.');
   }
@@ -47,12 +47,12 @@ function getConfigurationFromFile(configurationFile) {
   return [studentsFolderId, prefix, suffix];
 }
 
-function getConfigurationFile(spreadsheet) {
+function getConfigurationFile(spreadsheet, checkParents) {
   const parentFolders = DriveApp.getFileById(spreadsheet.getId()).getParents();
   var configurationFile = null;
   if (parentFolders.hasNext()) {
     var candidate = parentFolders.next();
-    var newConfigFile = getFileByName(candidate, CONFIGURATION_FILE_NAME, true);
+    var newConfigFile = getFileByName(candidate, CONFIGURATION_FILE_NAME, checkParents);
     if (newConfigFile !== null) {
       if (configurationFile === null) {
         configurationFile = newConfigFile;

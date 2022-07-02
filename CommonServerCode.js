@@ -126,9 +126,10 @@ function addStudentSheets(giveEditAccess, emailStudent) {
   const thisSheet = thisSpreadsheet.getActiveSheet();
 
   // Before creating student folders, find and extract information from configuration file.
-  const configurationFile = getConfigurationFile(thisSpreadsheet);
+  const configurationFile = getConfigurationFile(thisSpreadsheet, false);
   if (configurationFile === null) {
-    throw ('Unable to find file named "' + CONFIGURATION_FILE_NAME + '", which should have been created when the class was created.');
+    throw ('Unable to find file named "' + CONFIGURATION_FILE_NAME +
+      '", which should have been created when the class was created. Make sure you are in the same folder.');
   }
   const configuration = getConfigurationFromFile(configurationFile);
   const studentsFolderId = configuration[0];
