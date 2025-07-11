@@ -47,8 +47,18 @@ function getStudentFolder(studentsFolder, name) {
 
 function deleteOldSpreadsheet(studentFolder, fileName) {
   const files = studentFolder.getFilesByName(fileName);
-  if (files.hasNext()) {
-    Drive.Files.remove(files.next().getId());
+  while (files.hasNext()) {
+    const file = files.next();
+    if (file.isTrashed()) {
+      Logger.log('Skipping already trashed file: %s (%s)', file.getName(), file.getId());
+      continue;
+    }
+    try {
+      file.setTrashed(true);
+      Logger.log('Moved to trash: %s (%s)', file.getName(), file.getId());
+    } catch (e) {
+      Logger.log('Failed to trash file: %s (%s): %s', file.getName(), file.getId(), e.message);
+    }
   }
 }
 
@@ -68,7 +78,11 @@ function createNewSpreadsheet(spreadsheetName, folderId) {
     mimeType: MimeType.GOOGLE_SHEETS,
     parents: [{ id: folderId }]
   };
-  var newSpreadsheetFile = Drive.Files.insert(resource);
+  // aaaa
+  Logger.log('Folder ID: ' + folderId);
+  Logger.log('Folder: ' + DriveApp.getFolderById(folderId).getName());
+  
+  var newSpreadsheetFile = Drive.Files.insert(resource, null, { supportsAllDrives: true });
   return SpreadsheetApp.openById(newSpreadsheetFile.id);
 }
 
@@ -98,7 +112,8 @@ function addUserPermission(fileId, email, writePermission, notify) {
     },
       fileId,
       {
-        'sendNotificationEmails': notify
+        'sendNotificationEmails': notify,
+        'supportsAllDrives': true
       });
   } catch (e) {
     // The above call might fail if writePermission is false and the email address
