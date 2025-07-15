@@ -75,6 +75,16 @@ function copyContents(sourceRange, destRange, copyNotes) {
   destRange.setRichTextValues(sourceRange.getRichTextValues());
   destRange.setValues(sourceRange.getValues());
 
+  // additional formatting stuff
+  destRange.setBackgrounds(sourceRange.getBackgrounds());
+  destRange.setFontColors(sourceRange.getFontColors());
+  destRange.setFontWeights(sourceRange.getFontWeights());
+  destRange.setFontStyles(sourceRange.getFontStyles());
+  destRange.setFontFamilies(sourceRange.getFontFamilies());
+  destRange.setFontSizes(sourceRange.getFontSizes());
+  destRange.setHorizontalAlignments(sourceRange.getHorizontalAlignments());
+  destRange.setVerticalAlignments(sourceRange.getVerticalAlignments());
+
   if (copyNotes) {
     destRange.setNotes(sourceRange.getNotes());
   }
