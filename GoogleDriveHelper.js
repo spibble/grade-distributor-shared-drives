@@ -45,6 +45,14 @@ function getStudentFolder(studentsFolder, name) {
   error('Folder not found: ' + name);
 }
 
+/*
+function deleteOldSpreadsheet(studentFolder, fileName) {
+  const files = studentFolder.getFilesByName(fileName);
+  if (files.hasNext()) {
+    Drive.Files.remove(files.next().getId(), { supportsAllDrives: true });
+  }
+}
+*/
 function deleteOldSpreadsheet(studentFolder, fileName) {
   const files = studentFolder.getFilesByName(fileName);
   while (files.hasNext()) {
@@ -78,7 +86,7 @@ function createNewSpreadsheet(spreadsheetName, folderId) {
     mimeType: MimeType.GOOGLE_SHEETS,
     parents: [{ id: folderId }]
   };
-  // aaaa
+
   Logger.log('Folder ID: ' + folderId);
   Logger.log('Folder: ' + DriveApp.getFolderById(folderId).getName());
   
