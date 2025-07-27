@@ -9,3 +9,4 @@ Grade Distributor is a Google Sheets add-on for distributing grades from a singl
 For now this is out of scope, but some quality-of-life features include:
 - Being able to key on other things besides name for making folders (i.e., email)
 - Maintaining formatting when creating new copies of spreadsheets
+- Refreshing spreadsheet for individual students
